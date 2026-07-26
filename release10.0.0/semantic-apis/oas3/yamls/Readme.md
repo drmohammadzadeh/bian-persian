@@ -1,27 +1,27 @@
-**Download**
+**دانلود**
 
-BIAN Semantic APIs.
+رابط های برنامه نویسی معنایی BIAN.
 
-Each Swagger represents a BIAN Service Domain.
-
-
+هر Swagger نمایانگر یک حوزه خدمات BIAN است.
 
 
 
-**Contribute**
 
-1. Sign in to GitHub with your _username_
-2. Click the 'Fork' button in the upper right corner. This creates a working copy of the repository that you can download and change.
-3. Install the necessary Git client tools, for example, Download the Git client for your operating system here https://git-scm.com/downloads and run it.
-4. Clone the forked repository you created to your local computer by using the git clone command:
-    git clone https://github.com/username/bian-official _myrepository_
-    where _username_ is your GitHub username and _myrepository_ is a name you pick for the repository on your computer.
-5. Create a branch to add any new features:
+
+**مشارکت کنید**
+
+1. با نام کاربری خود وارد GitHub شوید _
+2. روی دکمه "Fork" در گوشه سمت راست بالا کلیک کنید. این یک کپی از مخزن ایجاد می کند که می توانید آن را دانلود و تغییر دهید.
+3. ابزارهای کلاینت Git لازم را نصب کنید، برای مثال، کلاینت گیت را برای سیستم عامل خود از اینجا دانلود کنید https://git-scm.com/downloads و اجرا کنید.
+4. از دستور git clone برای کلون کردن مخزن فورکی که ایجاد کرده در رایانه محلی خود استفاده کنید:
+    گیت کلون https://github.com/username/bian-official _myrepository_
+    که در آن _username_ نام کاربری GitHub شما و _myrepository_ نامی است که برای مخزن در رایانه خود انتخاب کنید.
+5. یک شعبه برای اضافه کردن هر ویژگی جدید ایجاد کنید:
     git checkout -b _mybranch_
-    where _mybranch_ is your new branch.
-6. Add any new features to _mybranch_
-7. The next step would be to stage, commit, and push the changed files back to your 'forked' repository on GitHub. You would be able to use _git add_, _commit_, and _push_ commands. Additional detailed information can be found here: https://git-scm.com/docs
-8. Go to your forked repository on GitHub and submit a Pull Request by clicking the 'Pull Request' button
-9. BIAN will review the changes proposed in your Pull Request, in the BIAN Working Groups with it's members. BIAN might then come back to you with questions / clarifications / suggestions for ammendments. If these changes are approved in the BIAN Working Groups, they will be used to enhance the BIAN standards, and released as part of scheduled future releases. 
-10. You are of course welcome to maintain your own fork, as your own flavour of implementation of the BIAN standard.
+    مکانی که _mybranch_ شعبه جدید شماست.
+6. هر ویژگی جدید را به _mybranch_ اضافه کنید
+7. مرحله بعدی مرحله بندی، commit کردن و هل دادن فایل های اصلاح شده به مخزن "forked" خود در GitHub است. می توانید از دستورات _git add_، _commit_ و _push_ استفاده کنید. اطلاعات دقیق را می توانید در اینجا بیابید: https://git-scm.com/docs
+8. به مخزن فورک خود در GitHub مراجعه کنید و با کلیک بر روی دکمه "درخواست کشش" یک درخواست ارسال کنید.
+9. BIAN پیشنهادی در درخواست کشش شما را در گروه های کاری BIAN با اعضای خود بررسی می کند. BIAN ممکن است از آن با سوالات / شفاف سازی ها / پیشنهاداتی برای اصلاحات به شما مراجعه کنید. اگر این تغییرات در گروه‌های کاری BIAN ممکن است، برای ارتقای استانداردهای BIAN استفاده می‌شود و به عنوان بخشی از نسخه‌های برنامه‌ریزی شده آینده منتشر می‌شود.
+10. اگر می توانید از چنگال خود به عنوان طعم خود در اجرای استاندارد BIAN استفاده کنید.
 

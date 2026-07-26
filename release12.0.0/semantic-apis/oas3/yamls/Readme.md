@@ -1,99 +1,99 @@
-These are BIAN Service Domain APIs extended with the BIAN BOM (Business Object Model), where such mappings have been done at BIAN.
+اینها APIهای دامنه خدمات BIAN هستند که با BIAN BOM (مدل شیء تجاری) توسعه یافته اند، که در آن چنین نگاشتها در BIAN انجام می شود.
 
-The list of BIAN BOM extended Service Domain APIs is as follows:
+API های دامنه خدمات خدمات BIAN BOM به شرح زیر فهرست شده اند:
 
-Account Reconciliation  
-Archive Services  
-Bank Drafts  
-Bank Guarantee  
-Branch Location Operations  
-Brokered Product  
-Cash Concentration  
-Cheque Lock Box  
-Contractor and Supplier Agreement  
-Corporate Action  
-Corporate Finance  
-Corporate Payroll Services  
-Corporate Trust Services  
-Correspondent Bank Relationship Management  
-Counterparty Administration  
-Credit Card Position Keeping  
-Credit Risk Operations  
-Customer Product and Service Directory  
-Customer Proposition  
-Dealer Desk  
-Document Services  
-eTrading Workbench  
-Factoring  
-Financial Instrument Reference Data Management  
-Financial Instrument Valuation  
-Financial Statement Assessment  
-Hedge Fund Administration  
-Internal Bank Account  
-Letter of Credit  
-Market Making  
-Merchant Relations  
-Mergers and Acquisitions Advisory  
-Mutual Fund Administration  
-Notional Pooling  
-Operational Gateway  
-Order Allocation  
-Payment Instruction  
-Payment Rail Operations  
-Private Placement  
-Product Sales Support  
-Product Service Agency  
-Program Trading  
-Project Finance  
-Public Offering  
-Quote Management  
-Securities Fails Processing  
-Service Directory  
-Servicing Issue  
-Standing Order  
-Stock Lending and Repos  
-Sub Custodian Agreement  
-Syndicate Management  
-Trade and Price Reporting  
-Trade Clearing  
-Trade Confirmation Matching  
-Trade Settlement  
-Trader Position Operations  
-Trading Book Oversight  
-Trust Services  
-Unit Trust Administration  
-Consumer Loan 
-Corporate Current Account
-Corporate Lease 
-Corporate Loan 
-Credit Card 
-Current Account
-Customer Access Entitlement
-Customer Offer
-Customer Position
-Customer Product and Service Eligibility
-Customer Relationship Management
-Direct Debit Mandate
-Investment Account
-Issued Device Administration
-Leasing 
-Loan 
-Location Data Management 
-Merchandising Loan 
-Mortgage Loan 
-Party Lifecycle Management
-Party Reference Data Directory
-Payment Execution
-Payment Order
-Position Keeping
-Product Directory
-Sales Product
-Sales Product Agreement
-Savings Account
-Service Provider Operations
-Servicing Mandate
-Syndicated Loan
-Term Deposit
-Virtual Account
+تطبیق حساب
+خدمات آرشیو
+پیش نویس های بانکی
+ضمانت نامه بانکی
+عملیات مکان یابی شعبه
+محصول دلالی
+تمرکز پول نقد
+جعبه قفل را علامت بزنید
+قرارداد پیمانکار و تامین کننده
+اقدام شرکتی
+امور مالی شرکتی
+خدمات حقوق و دستمزد شرکتی
+خدمات اعتماد شرکتی
+مدیریت ارتباط با بانک خبرنگار
+مدیریت طرف مقابل
+حفظ موقعیت کارت اعتباری
+عملیات ریسک اعتباری
+فهرست محصولات و خدمات مشتری
+پیشنهاد مشتری
+میز نمایندگی
+خدمات اسناد
+میز کار تجارت الکترونیک
+فاکتورینگ
+مدیریت داده های مرجع ابزار مالی
+ارزش گذاری ابزار مالی
+ارزیابی صورتهای مالی
+مدیریت صندوق تامینی
+حساب بانکی داخلی
+اعتبار نامه
+بازارسازی
+روابط با بازرگانان
+مشاوره ادغام و اکتساب
+مدیریت صندوق سرمایه گذاری مشترک
+ادغام مفهومی
+دروازه عملیاتی
+تخصیص سفارش
+دستور پرداخت
+عملیات ریلی پرداخت
+قرار دادن خصوصی
+پشتیبانی فروش محصول
+آژانس خدمات محصول
+تجارت برنامه
+امور مالی پروژه
+عرضه عمومی
+مدیریت نقل‌قول
+پردازش ناموفق اوراق بهادار
+فهرست خدمات
+موضوع سرویس دهی
+نظم ثابت
+وام و مخازن سهام
+قرارداد حافظ فرعی
+مدیریت سندیکا
+گزارش تجارت و قیمت
+تسویه تجارت
+تطبیق تایید تجارت
+تسویه تجارت
+عملیات موقعیت معامله گر
+نظارت بر دفتر معاملات
+خدمات اعتماد
+اداره اعتماد واحد
+وام مصرفی
+حساب جاری شرکت
+اجاره شرکتی
+وام شرکتی
+کارت اعتباری
+حساب جاری
+حق دسترسی مشتری
+پیشنهاد مشتری
+موقعیت مشتری
+واجد شرایط بودن محصول و خدمات مشتری
+مدیریت ارتباط با مشتری
+دستور بدهی مستقیم
+حساب سرمایه گذاری
+اداره دستگاه صادر شده
+لیزینگ
+وام
+مدیریت داده های مکان
+وام تجاری
+وام مسکن
+مدیریت چرخه حیات مهمانی
+فهرست اطلاعات مرجع حزب
+اجرای پرداخت
+دستور پرداخت
+حفظ موقعیت
+فهرست محصولات
+محصول فروش
+قرارداد فروش محصول
+حساب پس انداز
+عملیات ارائه‌دهنده خدمات
+دستور خدمت
+وام سندیکایی
+سپرده مدت دار
+حساب مجازی
 
 

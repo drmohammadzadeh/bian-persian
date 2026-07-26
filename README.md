@@ -5,61 +5,61 @@ https://bian.org/
 
 https://portal.bian.org/ 
 
-The Banking Industry Architecture Network (BIAN) is a collaborative not-for-profit ecosystem formed of leading banks, technology providers, consultants and academics from all over the globe.
+شبکه معماری صنعت بانکداری (BIAN) یک شرکت غیرانتفاعی و مشارکتی است که شامل بانک‌های پیشرو، ارائه‌دهندگان فناوری، مشاوران و دانشگاهیان از سراسر جهان می‌شود.
 
-Together this network of professionals is dedicated to lowering the cost of banking and boosting speed to innovation in the industry. Members combine their industry expertise to define a revolutionary banking technology framework that standardises and simplifies core banking architecture, which has typically been convoluted and outdated. Based on service oriented architecture principles, the comprehensive model provides a future-proofed solution for banks that fosters industry collaboration.
-
-
-**BIAN Portal**
-
-The BIAN Portal with access to the Model and APIs can be accessed at : https://portal.bian.org/
+این شبکه از متخصصان با هم به کاهش هزینه های بانکداری و افزایش سرعت نوآوری در صنعت اختصاص دارد. اعضا تخصص صنعت خود را ترکیب می‌کنند تا چارچوب فناوری بانکداری انقلابی را تعریف کنند که معماری اصلی بانکداری را که معمولاً پیچیده و قدیمی است، استاندارد و ساده می‌کند. بر اساس اصول معماری سرویس‌گرا، مدل جامع راه‌حلی برای بانک‌ها برای آینده ارائه می‌کند که همکاری صنعت را تقویت می‌کند.
 
 
-**Download - BIAN Sematic APIs**
+**پرتال BIAN**
 
-Release 14.0.0:
-1. Release 14.0.0 - BOM extended APIs (OAS 3.x) : https://github.com/bian-official/public/tree/main/release14.0.0/semantic-apis/oas3%20/yamls
-2. Release 14.0.0 - ISO20022 extended APIs and annotated for DDD (OAS 3.x) : https://github.com/bian-official/public/tree/main/release14.0.0/apis-iso20022_ext-ddd/oas3/yamls
-3. Release 14.0.0 - BOM extended APIs (Async 3.x) : https://github.com/bian-official/public/tree/main/release14.0.0/semantic-apis/asyncapi-3.x/yamls
-4. Release 14.0.0 - ISO20022 extended APIs and annotated for DDD (Async 3.x): https://github.com/bian-official/public/tree/main/release14.0.0/apis-iso20022_ext-ddd/asyncapi-3.x/yamls
+پورتال BIAN با دسترسی به مدل ها و API ها در آدرس زیر قابل دسترسی است: https://portal.bian.org/
 
 
-Release 13.0.0:
-1. Release 13.0.0 - BOM extended APIs (OAS 3.x) : https://github.com/bian-official/public/tree/main/release13.0.0/semantic-apis/oas3/yamls
-2. Release 13.0.0 - ISO20022 extended APIs and annotated for DDD (OAS 3.x) : https://github.com/bian-official/public/tree/main/release13.0.0/apis-iso20022_ext-ddd/oas3/yamls
-3. Release 13.0.0 - BOM extended APIs (Async 3.x) : https://github.com/bian-official/public/tree/main/release13.0.0/semantic-apis/asyncapi-3.x/yamls
-4. Release 13.0.0 - ISO20022 extended APIs and annotated for DDD (Async 3.x): https://github.com/bian-official/public/tree/main/release13.0.0/apis-iso20022_ext-ddd/asyncapi-3.x/yamls
+**دانلود - ارتباط برنامه‌نویسی معنایی BIAN*
+
+نسخه 14.0.0:
+1. نسخه 14.0.0 - API های توسعه یافته BOM (OAS 3.x): https://github.com/bian-official/public/tree/main/release14.0.0/semantic-apis/oas3%20/yamls
+2. نسخه 14.0.0 - API توسعه یافته ISO20022 و حاشیه نویسی برای DD (OAS 3.x): https://github.com/bian-official/public/tree/main/release14.0.0/apis-iso20022_ext-ddd/oas3/ya
+3. نسخه 14.0.0 - API های توسعه یافته BOM (Async 3.x): https://github.com/bian-official/public/tree/main/release14.0.0/semantic-apis/asyncapi-3.x/yamls
+4. نسخه 14.0.0 - API های توسعه یافته ISO20022 و حاشیه نویسی شده برای DDD (Async 3.x): https://github.com/bian-official/public/tree/main/release14.0.0/apis-iso20022_ext-dd-s/asyncapi
 
 
-Release 12.0.0: 
-1. Release 12.0.0 - BOM extended APIs (OAS 3.x) : https://github.com/bian-official/public/tree/main/release12.0.0/semantic-apis/oas3/yamls
-2. Release 12.0.0 - ISO20022 extended APIs and annotated for DDD (OAS 3.x) : https://github.com/bian-official/public/tree/main/release12.0.0/apis-iso20022_ext-ddd/oas3/yamls
-3. Release 12.0.0 - BOM extended APIs (Async 3.x) : https://github.com/bian-official/public/tree/main/release12.0.0/semantic-apis/asyncapi-3.x/yamls
-4. Release 12.0.0 - ISO20022 extended APIs and annotated for DDD (Async 3.x): https://github.com/bian-official/public/tree/main/release12.0.0/apis-iso20022_ext-ddd/asyncapi-3.x/yamls
-
-Previous Releases: 
-1. Release 11.0.0 (OAS 3.x) : https://github.com/bian-official/public/tree/main/release11.0.0/semantic-apis/oas3/yamls
-2. Release 10.0.0 (OAS 3.x) : https://github.com/bian-official/public/tree/main/release10.0.0/semantic-apis/oas3/yamls
-3. Release 9.1.0 (Swagger 2.x) : https://github.com/bian-official/public/tree/main/release9.1/semantic-apis/swaggers
-
-Each API Specification represents a BIAN Service Domain.
+نسخه 13.0.0:
+1. نسخه 13.0.0 - API های توسعه یافته BOM (OAS 3.x): https://github.com/bian-official/public/tree/main/release13.0.0/semantic-apis/oas3/yamls
+2. نسخه 13.0.0 - API توسعه یافته ISO20022 و حاشیه نویسی برای DD (OAS 3.x): https://github.com/bian-official/public/tree/main/release13.0.0/apis-iso20022_ext-ddd/oas3/ya
+3. نسخه 13.0.0 - API های توسعه یافته BOM (Async 3.x): https://github.com/bian-official/public/tree/main/release13.0.0/semantic-apis/asyncapi-3.x/yamls
+4. نسخه 13.0.0 - ISO20022 توسعه API و حاشیه نویسی برای DDD (Async 3.x): https://github.com/bian-official/public/tree/main/release13.0.0/apis-iso20022_ext-ddd/asyncapi-s
 
 
+نسخه 12.0.0:
+1. نسخه 12.0.0 - API های توسعه یافته BOM (OAS 3.x): https://github.com/bian-official/public/tree/main/release12.0.0/semantic-apis/oas3/yamls
+2. نسخه 12.0.0 - API توسعه یافته ISO20022 و حاشیه‌نویسی برای DD (OAS 3.x): https://github.com/bian-official/public/tree/main/release12.0.0/apis-iso20022_ext-ddd/oas3/ya
+3. نسخه 12.0.0 - API های توسعه یافته BOM (Async 3.x): https://github.com/bian-official/public/tree/main/release12.0.0/semantic-apis/asyncapi-3.x/yamls
+4. نسخه 12.0.0 - ISO20022 توسعه API و حاشیه نویسی برای DDD (Async 3.x): https://github.com/bian-official/public/tree/main/release12.0.0/apis-iso20022_ext-ddd/asyncapi-s
+
+انتشارات قبلی:
+1. نسخه 11.0.0 (OAS 3.x): https://github.com/bian-official/public/tree/main/release11.0.0/semantic-apis/oas3/yamls
+2. نسخه 10.0.0 (OAS 3.x): https://github.com/bian-official/public/tree/main/release10.0.0/semantic-apis/oas3/yamls
+3. نسخه 9.1.0 (Swagger 2.x): https://github.com/bian-official/public/tree/main/release9.1/semantic-apis/swaggers
+
+هر یک از مشخصات API نشان دهنده یک دامنه خدمات BIAN است.
 
 
-**Contribute**
 
-1. Sign in to GitHub with your _username_
-2. Click the 'Fork' button in the upper right corner. This creates a working copy of the repository that you can download and change.
-3. Install the necessary Git client tools, for example, Download the Git client for your operating system here https://git-scm.com/downloads and run it.
-4. Clone the forked repository you created to your local computer by using the git clone command. It will look something like this:
-    git clone https://github.com/username/bian-official _myrepository_
-    where _username_ is your GitHub username and _myrepository_ is a name you pick for the repository on your computer.
-5. Create a branch to add any new features:
+
+**مشارکت کنید**
+
+1. با نام کاربری خود وارد GitHub شوید _
+2. روی دکمه "Fork" در گوشه سمت راست بالا کلیک کنید. این یک کپی از مخزن ایجاد می کند که می توانید آن را دانلود و تغییر دهید.
+3. ابزارهای کلاینت Git لازم را نصب کنید، برای مثال، کلاینت گیت را برای سیستم عامل خود از اینجا دانلود کنید https://git-scm.com/downloads و اجرا کنید.
+4. از دستور git clone برای کلون کردن مخزن فورکی که ایجاد کرده است در رایانه محلی خود استفاده کنید. چیزی شبیه به این خواهد بود:
+    گیت کلون https://github.com/username/bian-official _myrepository_
+    که در آن _username_ نام کاربری GitHub شما و _myrepository_ نامی است که برای مخزن در رایانه خود انتخاب کنید.
+5. یک شعبه برای اضافه کردن هر ویژگی جدید ایجاد کنید:
     git checkout -b _mybranch_
-    where _mybranch_ is your new branch.
-6. Add any new features to _mybranch_
-7. The next step would be to stage, commit, and push the changed files back to your 'forked' repository on GitHub. You would be able to use _git add_, _commit_, and _push_ commands. Additional detailed information can be found here: https://git-scm.com/docs
-8. Go to your forked repository on GitHub and submit a Pull Request by clicking the 'Pull Request' button
-9. BIAN will review the changes proposed in your Pull Request, in the BIAN Working Groups with it's members. BIAN might then come back to you with questions / clarifications / suggestions for ammendments. If these changes are approved in the BIAN Working Groups, they will be used to enhance the BIAN standards, and released as part of scheduled future releases. 
-10. You are of course welcome to maintain your own fork, as your own flavour of implementation of the BIAN standard.
+    محل که _mybranch_ شاخه جدید شماست.
+6. هر ویژگی جدید را به _mybranch_ اضافه کنید
+7. مرحله بعدی مرحله بندی، commit کردن و هل دادن فایل های اصلاح شده به مخزن "forked" خود در GitHub است. می توانید از دستورات _git add_، _commit_ و _push_ استفاده کنید. اطلاعات دقیق را می توانید در اینجا بیابید: https://git-scm.com/docs
+8. به مخزن فورک خود در GitHub مراجعه کنید و با کلیک بر روی دکمه "درخواست کشش" یک درخواست ارسال کنید.
+9. BIAN پیشنهادی در درخواست کشش شما را در گروه های کاری BIAN با اعضای خود بررسی می کند. BIAN ممکن است از آن با سوالات / شفاف سازی ها / پیشنهاداتی برای اصلاحات به شما مراجعه کنید. اگر این تغییرات در گروه‌های کاری BIAN ممکن است، برای ارتقای استانداردهای BIAN استفاده می‌شود و به عنوان بخشی از نسخه‌های برنامه‌ریزی شده آینده منتشر می‌شود.
+10. اگر می توانید از چنگال خود به عنوان طعم خود در اجرای استاندارد BIAN استفاده کنید.

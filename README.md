@@ -27,25 +27,34 @@ https://portal.bian.org/
 3. **[متدولوژی و راهنمای بومی‌سازی دامنه‌ها](docs/bian-iran-methodology.md):** فرآیند ۵ مرحله‌ای بومی‌سازی سایر دامنه‌های سرویس BIAN برای ایران.
 4. **[سند طراحی معماری بومی‌سازی](docs/superpowers/specs/2026-09-09-bian-persian-localization-design.md)**
 
-### دامنه‌های سرویس پایلوت (نسخه ۱۴.۰.۰):
-مشخصات فنی OpenAPI 3.0 در مسیر `bian-iran/release14.0.0/` قرار دارند:
+### ساختار فایل‌های بومی‌سازی شده نسخه ۱۴.۰.۰ (`bian-iran/release14.0.0/`):
+تمامی **۱۰۳۲ فایل مشخصات فنی (OpenAPI و AsyncAPI)** به همراه مولفه‌های مشترک هسته بانکداری ایران به زبان فارسی و با تگ‌های نظارتی بانک مرکزی بومی‌سازی شده‌اند:
 
-* **مولفه‌های پایه و مشترک:**
+* **مولفه‌های پایه و مشترک (`common/`):**
   * [`iran-banking-core.yaml`](bian-iran/release14.0.0/common/iran-banking-core.yaml): کد ملی، شناسه حقوقی، شناسه شهاب (نهاب)، شماره شبا، شماره کارت، شناسه صیادی، تقویم جلالی و مبالغ ریالی.
   * [`islamic-contracts.yaml`](bian-iran/release14.0.0/common/islamic-contracts.yaml): عقود اسلامی (مرابحه، مضاربه، جعاله، قرض‌الحسنه و...)، تضامین، سفته الکترونیک و جداول اقساط.
   * [`error-codes.yaml`](bian-iran/release14.0.0/common/error-codes.yaml): کدهای خطای شبکه شتاب و شاپرک و قالب استاندارد ProblemDetails.
 
-* **دامنه‌های سرویس پیاده‌سازی شده:**
-  * [`CurrentAccount.yaml`](bian-iran/release14.0.0/service-domains/CurrentAccount.yaml): **حساب قرض‌الحسنه جاری** (افتتاح حساب متصل به نهاب/شهاب، صدور دسته چک صیاد/چکاد، مسدودی سیاح و صورتحساب شمسی).
-  * [`ConsumerLoan.yaml`](bian-iran/release14.0.0/service-domains/ConsumerLoan.yaml): **تسهیلات خرد** (ثبت پرونده بر اساس عقود اسلامی، استعلام سمات، سفته الکترونیک، پرداخت و تقسیط).
-  * [`PaymentOrderInitiation.yaml`](bian-iran/release14.0.0/service-domains/PaymentOrderInitiation.yaml): **دستور پرداخت** (هدایت پرداخت‌ها به انتقال داخلی، سامانه پل، پایا و ساتنا با کنترل سقف‌های روزانه).
-  * [`CardAuthorization.yaml`](bian-iran/release14.0.0/service-domains/CardAuthorization.yaml): **مجوزدهی تراکنش کارت** (احراز هویت رمز دوم پویا/هدی، سامانه شاهکار، کنترل موجودی و سوئیچ شتاب/شاپرک).
+* **مجموعه دامنه‌های بومی‌سازی شده (۱۰۳۲ فایل):**
+  1. **APIهای معنایی OpenAPI 3.x:** ۲۵۸ دامنه سرویس بومی‌شده در مسیر [`bian-iran/release14.0.0/semantic-apis/oas3/yamls/`](bian-iran/release14.0.0/semantic-apis/oas3/yamls/)
+  2. **APIهای معنایی AsyncAPI 3.x:** ۲۵۸ فایل رویدادمحور در مسیر [`bian-iran/release14.0.0/semantic-apis/asyncapi-3.x/yamls/`](bian-iran/release14.0.0/semantic-apis/asyncapi-3.x/yamls/)
+  3. **APIهای توسعه‌یافته ISO 20022 (OpenAPI):** ۲۵۸ دامنه سرویس در مسیر [`bian-iran/release14.0.0/apis-iso20022_ext-ddd/oas3/yamls/`](bian-iran/release14.0.0/apis-iso20022_ext-ddd/oas3/yamls/)
+  4. **APIهای توسعه‌یافته ISO 20022 (AsyncAPI):** ۲۵۸ دامنه سرویس در مسیر [`bian-iran/release14.0.0/apis-iso20022_ext-ddd/asyncapi-3.x/yamls/`](bian-iran/release14.0.0/apis-iso20022_ext-ddd/asyncapi-3.x/yamls/)
 
-### نحوه اعتبارسنجی فایل‌های OpenAPI:
-برای اطمینان از سلامت ساختار تمام فایل‌های YAML و ارجاعات `$ref`، اسکریپت آزمون زیر را اجرا کنید:
+* **دامنه‌های پایلوت با پیاده‌سازی عمیق اختصاصی (`service-domains/`):**
+  * [`CurrentAccount.yaml`](bian-iran/release14.0.0/service-domains/CurrentAccount.yaml): **حساب قرض‌الحسنه جاری** (نهاب، صیاد، چکاد، سیاح).
+  * [`ConsumerLoan.yaml`](bian-iran/release14.0.0/service-domains/ConsumerLoan.yaml): **تسهیلات خرد** (عقود اسلامی، سمات، سفته الکترونیک، تقسیط).
+  * [`PaymentOrderInitiation.yaml`](bian-iran/release14.0.0/service-domains/PaymentOrderInitiation.yaml): **دستور پرداخت** (انتقال داخلی، سامانه پل، پایا و ساتنا).
+  * [`CardAuthorization.yaml`](bian-iran/release14.0.0/service-domains/CardAuthorization.yaml): **مجوزدهی تراکنش کارت** (رمز دوم پویا، شاهکار، سوئیچ شتاب/شاپرک).
+
+### ابزارهای اعتبارسنجی و بومی‌سازی:
 ```bash
+# اعتبارسنجی سینتکس و ساختار تمام فایل‌ها
 python tests/validate_openapi.py
 python tests/test_docs.py
+
+# خط‌لوله بازتولید و بومی‌سازی
+python scripts/localize_release14.py
 ```
 
 ---

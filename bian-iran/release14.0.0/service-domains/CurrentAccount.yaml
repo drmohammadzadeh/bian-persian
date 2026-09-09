@@ -1,0 +1,354 @@
+openapi: 3.0.1
+info:
+  title: دامنه سرویس حساب قرض‌الحسنه جاری (Current Account)
+  version: 14.0.0
+  description: >-
+    مدیریت چرخه عمر حساب‌های قرض‌الحسنه جاری در سیستم بانکی ایران شامل افتتاح حساب متصل به
+    سامانه نهاب (شناسه شهاب)، صدور دسته‌چک و چکاد تحت نظارت صیاد، اعمال مسدودی‌های قضایی
+    سامانه سیاح، و ارائه صورتحساب با تقویم شمسی.
+servers:
+  - url: https://api.bank.ir/bian-iran/v14/current-account
+    description: سرور عملیاتی درگاه خدمات بانکداری متمرکز
+paths:
+  /CurrentAccount/Initiate:
+    post:
+      summary: افتتاح حساب جاری جدید
+      description: >-
+        افتتاح حساب جاری برای مشتری، استعلام و الصاق شناسه ۱۶ رقمی شهاب از سامانه نهاب،
+        تخصیص شماره حساب متمرکز و صدور شماره شبای معتبر.
+      operationId: initiateCurrentAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiateCurrentAccountRequest'
+      responses:
+        '201':
+          description: حساب جاری با موفقیت افتتاح شد.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentAccountFacility'
+        '400':
+          description: خطای اعتبارسنجی داده‌های ورودی (مانند کد ملی نامعتبر)
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+        '500':
+          description: خطای داخلی یا عدم پاسخ‌دهی سامانه نهاب
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+  /CurrentAccount/{accountId}/ChequeFacility/Request:
+    post:
+      summary: درخواست صدور دسته چک صیادی
+      description: >-
+        ثبت درخواست صدور دسته چک کاغذی یا چک دیجیتال (چکاد) به همراه استعلام برخط
+        سوءاثر و چک برگشتی از سامانه صیاد/سماچک بانک مرکزی.
+      operationId: requestChequeFacility
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          description: شماره حساب متمرکز
+          schema:
+            $ref: '../common/iran-banking-core.yaml#/components/schemas/InternalAccountNumber'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChequeFacilityRequest'
+      responses:
+        '200':
+          description: استعلام صیاد موفق و درخواست دسته چک ثبت گردید.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChequeFacilityResponse'
+        '400':
+          description: مشتری دارای چک برگشتی رفع سوءاثر نشده است یا شرایط اعتباری را ندارد.
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+  /CurrentAccount/{accountId}/Lien/Apply:
+    post:
+      summary: اعمال مسدودی برخط حساب (سامانه سیاح)
+      description: >-
+        مسدودسازی تمام یا بخشی از موجودی حساب بر مبنای دستور قضایی، مالیاتی، ثبتی یا بانکی
+        منطبق بر الزامات سامانه سیاح بانک مرکزی.
+      operationId: applyAccountLien
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          description: شماره حساب متمرکز
+          schema:
+            $ref: '../common/iran-banking-core.yaml#/components/schemas/InternalAccountNumber'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplyLienRequest'
+      responses:
+        '200':
+          description: مسدودی حساب با موفقیت اعمال گردید.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LienRecord'
+        '400':
+          description: خطای مشخصات حکم قضایی یا شناسه حساب
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+  /CurrentAccount/{accountId}/Lien/{lienId}/Release:
+    delete:
+      summary: رفع مسدودی حساب
+      description: رفع مسدودی مبلغ یا حساب بر اساس نامه رفع انسداد مراجع ذی‌صلاح.
+      operationId: releaseAccountLien
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          description: شماره حساب متمرکز
+          schema:
+            $ref: '../common/iran-banking-core.yaml#/components/schemas/InternalAccountNumber'
+        - name: lienId
+          in: path
+          required: true
+          description: شناسه مسدودی
+          schema:
+            type: string
+            example: 'LIEN-1403-9002'
+      responses:
+        '200':
+          description: رفع مسدودی با موفقیت انجام شد.
+        '404':
+          description: شناسه مسدودی یافت نشد.
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+  /CurrentAccount/{accountId}/Statement:
+    get:
+      summary: دریافت صورتحساب و گردش حساب با تقویم جلالی
+      description: استعلام گردش تراکنش‌های حساب جاری به همراه مانده دفتری و مانده در دسترس.
+      operationId: retrieveAccountStatement
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          description: شماره حساب متمرکز
+          schema:
+            $ref: '../common/iran-banking-core.yaml#/components/schemas/InternalAccountNumber'
+        - name: fromDate
+          in: query
+          required: false
+          description: تاریخ آغاز گزارش به تقویم شمسی
+          schema:
+            $ref: '../common/iran-banking-core.yaml#/components/schemas/JalaliDate'
+        - name: toDate
+          in: query
+          required: false
+          description: تاریخ پایان گزارش به تقویم شمسی
+          schema:
+            $ref: '../common/iran-banking-core.yaml#/components/schemas/JalaliDate'
+      responses:
+        '200':
+          description: صورتحساب حساب با موفقیت بازگردانده شد.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountStatement'
+        '404':
+          description: شماره حساب یافت نشد.
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+components:
+  schemas:
+    InitiateCurrentAccountRequest:
+      type: object
+      title: درخواست افتتاح حساب جاری
+      required:
+        - customer
+        - branchCode
+      properties:
+        customer:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/CustomerIdentification'
+        branchCode:
+          type: string
+          title: کد شعبه افتتاح‌کننده
+          example: '01024'
+        initialDepositAmount:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+
+    CurrentAccountFacility:
+      type: object
+      title: رکورد تسهیلات و دارایی حساب جاری
+      required:
+        - accountId
+        - iban
+        - shahabId
+        - ledgerBalance
+        - availableBalance
+        - openDate
+        - accountStatus
+      properties:
+        accountId:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/InternalAccountNumber'
+        iban:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/IbanNumber'
+        shahabId:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/ShahabId'
+        ledgerBalance:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        availableBalance:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        openDate:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/JalaliDate'
+        accountStatus:
+          type: string
+          title: وضعیت حساب
+          enum:
+            - Active
+            - Blocked
+            - Dormant
+            - Closed
+          example: Active
+
+    ChequeFacilityRequest:
+      type: object
+      title: درخواست دسته چک
+      required:
+        - leafCount
+        - chequeType
+      properties:
+        leafCount:
+          type: integer
+          title: تعداد برگه‌های دسته چک
+          enum: [10, 25, 50]
+          example: 25
+        chequeType:
+          type: string
+          title: نوع چک
+          enum: [PaperSayad, DigitalChakad]
+          example: PaperSayad
+
+    ChequeFacilityResponse:
+      type: object
+      title: پاسخ درخواست دسته چک
+      required:
+        - trackingCode
+        - sayadStatus
+        - isApproved
+      properties:
+        trackingCode:
+          type: string
+          example: 'SAYAD-REQ-98124'
+        sayadStatus:
+          type: string
+          title: وضعیت استعلام سامانه صیاد
+          example: White # وضعیت سفید اعتباری
+        isApproved:
+          type: boolean
+          example: true
+
+    ApplyLienRequest:
+      type: object
+      title: مشخصات مسدودی حساب
+      required:
+        - blockedAmount
+        - authorityName
+        - orderNumber
+      properties:
+        blockedAmount:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        authorityName:
+          type: string
+          title: مرجع صادرکننده حکم (قوه قضاییه، دارایی، ثبت اسناد)
+          example: دادگستری کل استان تهران
+        orderNumber:
+          type: string
+          title: شماره نامه یا شناسه پرونده سیاح
+          example: 'SAYYAH-ORD-881290'
+        reasonFa:
+          type: string
+          title: شرح مسدودی
+          example: دستور مسدودی حساب کلاسه پرونده ۹۸۰۱
+
+    LienRecord:
+      type: object
+      title: سابقه مسدودی حساب
+      required:
+        - lienId
+        - blockedAmount
+        - appliedDate
+      properties:
+        lienId:
+          type: string
+          example: 'LIEN-1403-9002'
+        blockedAmount:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        appliedDate:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/JalaliDate'
+
+    TransactionRecord:
+      type: object
+      title: رکورد تراکنش گردش حساب
+      required:
+        - transactionId
+        - transactionDate
+        - amount
+        - balanceAfter
+        - transactionType
+      properties:
+        transactionId:
+          type: string
+          example: 'TX-90238129'
+        transactionDate:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/JalaliDate'
+        amount:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        balanceAfter:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        transactionType:
+          type: string
+          enum: [Deposit, Withdrawal]
+          example: Deposit
+        descriptionFa:
+          type: string
+          example: واریز حقوق از طریق پایا
+
+    AccountStatement:
+      type: object
+      title: صورتحساب کامل حساب جاری
+      required:
+        - accountId
+        - fromDate
+        - toDate
+        - transactions
+      properties:
+        accountId:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/InternalAccountNumber'
+        fromDate:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/JalaliDate'
+        toDate:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/JalaliDate'
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionRecord'

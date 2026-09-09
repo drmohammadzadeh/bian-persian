@@ -1,0 +1,246 @@
+openapi: 3.0.1
+info:
+  title: دامنه سرویس تسهیلات خرد و عقود اسلامی (Consumer Loan)
+  version: 14.0.0
+  description: >-
+    مدیریت پرونده تسهیلات انفرادی و خرد بر مبنای قانون عملیات بانکی بدون ربا (عقود مرابحه،
+    قرض‌الحسنه، جعاله و...)، استعلام تسهیلات و تعهدات از سامانه سمات بانک مرکزی،
+    ثبت سفته الکترونیک و تضامین، پرداخت وجه، و تولید جدول اقساط شمسی.
+servers:
+  - url: https://api.bank.ir/bian-iran/v14/consumer-loan
+    description: سرور سامانه متمرکز اعتبارات و تسهیلات
+paths:
+  /ConsumerLoan/Initiate:
+    post:
+      summary: ثبت درخواست پرونده تسهیلات خرد
+      description: >-
+        تشکیل پرونده اولیه تسهیلات با انتخاب عقد اسلامی، مشخصات متقاضی، مبلغ درخواستی و تعداد اقساط.
+      operationId: initiateConsumerLoan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiateLoanRequest'
+      responses:
+        '201':
+          description: پرونده تسهیلاتی با موفقیت تشکیل گردید.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanFacility'
+        '400':
+          description: خطای اعتبارسنجی داده‌های ورودی
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+  /ConsumerLoan/{loanId}/CreditAssessment:
+    post:
+      summary: استعلام سمات و ارزیابی اعتباری متقاضی
+      description: >-
+        استعلام بدهی‌های غیرجاری، چک برگشتی و تعهدات از سامانه سمات بانک مرکزی و اعتبارسنجی توان بازپرداخت.
+      operationId: assessLoanCreditworthiness
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          description: شناسه پرونده تسهیلات
+          schema:
+            type: string
+            example: 'LN-772391'
+      responses:
+        '200':
+          description: استعلام سمات با موفقیت انجام شد.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditAssessmentResult'
+        '400':
+          description: متقاضی دارای بدهی سررسید گذشته، معوق یا مشکوک‌الوصول در سمات است.
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+  /ConsumerLoan/{loanId}/Collateral/Register:
+    post:
+      summary: ثبت وثایق، سفته الکترونیک و ضامنین
+      description: >-
+        ثبت و اعتبارسنجی تضامین تسهیلات شامل سفته الکترونیک ثبت شده در سامانه خزانه‌داری یا معرفی ضامن با کد ملی.
+      operationId: registerLoanCollateral
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          description: شناسه پرونده تسهیلات
+          schema:
+            type: string
+            example: 'LN-772391'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../common/islamic-contracts.yaml#/components/schemas/CollateralDetails'
+      responses:
+        '200':
+          description: وثیقه یا ضمانت با موفقیت به پرونده تسهیلاتی پیوست گردید.
+        '400':
+          description: مشخصات وثیقه یا ضامن نامعتبر است.
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+  /ConsumerLoan/{loanId}/Disbursement:
+    post:
+      summary: اعطا و پرداخت وجه تسهیلات (Disbursement)
+      description: >-
+        واریز اصل مبلغ تسهیلات به حساب متقاضی پس از تکمیل تضامین و صدور جدول استهلاک اقساط به تقویم شمسی.
+      operationId: disburseLoan
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          description: شناسه پرونده تسهیلات
+          schema:
+            type: string
+            example: 'LN-772391'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisbursementRequest'
+      responses:
+        '200':
+          description: وجه تسهیلات با موفقیت واریز گردید و پرونده فعال شد.
+          content:
+            application/json:
+              schema:
+                $ref: '../common/islamic-contracts.yaml#/components/schemas/InstallmentSchedule'
+        '400':
+          description: شرایط پرداخت محقق نشده یا تضامین ناقص است.
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+  /ConsumerLoan/{loanId}/InstallmentSchedule:
+    get:
+      summary: دریافت جدول سررسید اقساط تسهیلات
+      description: مشاهده ریز اقساط تسهیلات، مانده اصل، مانده سود و وضعیت پرداخت هر قسط به تاریخ شمسی.
+      operationId: retrieveLoanInstallmentSchedule
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          description: شناسه پرونده تسهیلات
+          schema:
+            type: string
+            example: 'LN-772391'
+      responses:
+        '200':
+          description: جدول اقساط با موفقیت دریافت گردید.
+          content:
+            application/json:
+              schema:
+                $ref: '../common/islamic-contracts.yaml#/components/schemas/InstallmentSchedule'
+        '404':
+          description: پرونده تسهیلاتی یافت نشد.
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+components:
+  schemas:
+    InitiateLoanRequest:
+      type: object
+      title: درخواست تسهیلات خرد
+      required:
+        - customer
+        - contractType
+        - requestedAmount
+        - installmentCount
+      properties:
+        customer:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/CustomerIdentification'
+        contractType:
+          $ref: '../common/islamic-contracts.yaml#/components/schemas/ContractType'
+        requestedAmount:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        installmentCount:
+          type: integer
+          title: تعداد اقساط درخواستی
+          example: 24
+
+    LoanFacility:
+      type: object
+      title: رکورد تسهیلات خرد بانکی
+      required:
+        - loanId
+        - contract
+        - loanStatus
+        - creationDate
+      properties:
+        loanId:
+          type: string
+          example: 'LN-772391'
+        contract:
+          $ref: '../common/islamic-contracts.yaml#/components/schemas/IslamicContractDetails'
+        loanStatus:
+          type: string
+          enum:
+            - UnderReview
+            - CollateralPending
+            - ReadyForDisbursement
+            - Active
+            - Settled
+          example: UnderReview
+        creationDate:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/JalaliDate'
+
+    CreditAssessmentResult:
+      type: object
+      title: نتیجه اعتبارسنجی سمات بانک مرکزی
+      required:
+        - samatInquiryNumber
+        - creditScore
+        - hasOverdueDebt
+        - hasBouncedCheque
+        - isEligible
+      properties:
+        samatInquiryNumber:
+          type: string
+          title: شناسه رهگیری استعلام سمات
+          example: 'SMT-1403-5590'
+        creditScore:
+          type: integer
+          title: امتیاز اعتباری (بین ۳۰۰ تا ۹۰۰)
+          example: 740
+        hasOverdueDebt:
+          type: boolean
+          title: آیا بدهی غیرجاری دارد؟
+          example: false
+        hasBouncedCheque:
+          type: boolean
+          title: آیا سابقه چک برگشتی فعال دارد؟
+          example: false
+        isEligible:
+          type: boolean
+          title: آیا مجاز به دریافت تسهیلات است؟
+          example: true
+
+    DisbursementRequest:
+      type: object
+      title: درخواست پرداخت و واریز تسهیلات
+      required:
+        - targetIban
+      properties:
+        targetIban:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/IbanNumber'
+        firstInstallmentDate:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/JalaliDate'

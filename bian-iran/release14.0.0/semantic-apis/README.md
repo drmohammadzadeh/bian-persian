@@ -7,3 +7,6 @@
 ## 📂 زیرشاخه‌ها:
 * **[`oas3/`](oas3/README.md):** مشخصات مبتنی بر پروتکل وب و RESTful در قالب OpenAPI 3.x.
 * **[`asyncapi-3.x/`](asyncapi-3.x/README.md):** مشخصات رویدادمحور بر بستر صف‌های پیام در قالب AsyncAPI 3.x.
+
+---
+طراحی و توسعه: alimohammadzadeh@ut.ac.ir

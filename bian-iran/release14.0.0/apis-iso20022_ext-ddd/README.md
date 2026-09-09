@@ -7,3 +7,6 @@
 ## 📂 زیرشاخه‌ها:
 * **[`oas3/`](oas3/README.md):** مشخصات OpenAPI 3.x منطبق با ساختار پیام‌های ISO 20022.
 * **[`asyncapi-3.x/`](asyncapi-3.x/README.md):** مشخصات AsyncAPI 3.x منطبق با ساختار پیام‌های ISO 20022.
+
+---
+طراحی و توسعه: alimohammadzadeh@ut.ac.ir

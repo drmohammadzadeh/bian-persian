@@ -11,3 +11,6 @@ Branch: `feature/bian-persian-localization`
 - Task 4: Pilot Service Domains - CurrentAccount & ConsumerLoan - Complete (commit 0261b9a)
 - Task 5: Pilot Service Domains - PaymentOrderInitiation & CardAuthorization - Complete (commit 1a25694)
 - Task 6: End-to-End Verification, Documentation Links & README Update - Complete
+
+---
+طراحی و توسعه: alimohammadzadeh@ut.ac.ir

@@ -442,3 +442,6 @@ Update `README.md` to feature the new `bian-iran/` localized release 14.0.0, out
 git add README.md
 git commit -m "docs: update README with BIAN Iranian localization guide and pilot domains"
 ```
+
+---
+طراحی و توسعه: alimohammadzadeh@ut.ac.ir

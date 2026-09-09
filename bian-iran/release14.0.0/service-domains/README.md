@@ -37,3 +37,6 @@
   * احراز هویت دارنده کارت با رمز پویا/هدی و تطابق شاهکار (`POST /CardAuthorization/Authorize`).
   * کنترل موجودی و بررسی سقف برداشت روزانه (`POST /CardAuthorization/VerifyBalance`).
   * پردازش عملیات برگشت تراکنش / اصلاحیه شتابی (`POST /CardAuthorization/Reverse`).
+
+---
+طراحی و توسعه: alimohammadzadeh@ut.ac.ir

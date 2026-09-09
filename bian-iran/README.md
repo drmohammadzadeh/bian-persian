@@ -18,9 +18,10 @@
 ---
 
 ## 📚 پیوندهای اسناد بالادستی:
-* [واژه‌نامه تخصصی BIAN به فارسی](../../docs/bian-iran-lexicon.md)
-* [ماتریس نگاشت با سامانه‌های بانک مرکزی](../../docs/cbi-regulatory-mapping.md)
-* [متدولوژی ۵ مرحله‌ای بومی‌سازی دامنه‌ها](../../docs/bian-iran-methodology.md)
+* [واژه‌نامه تخصصی BIAN به فارسی](../docs/bian-iran-lexicon.md)
+* [ماتریس نگاشت با سامانه‌های بانک مرکزی](../docs/cbi-regulatory-mapping.md)
+* [متدولوژی ۵ مرحله‌ای بومی‌سازی دامنه‌ها](../docs/bian-iran-methodology.md)
 
 ---
 طراحی و توسعه: alimohammadzadeh@ut.ac.ir
+

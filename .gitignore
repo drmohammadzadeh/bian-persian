@@ -1,0 +1,17 @@
+# Agentic & Superpowers local process and configuration files
+.superpowers/
+docs/superpowers/
+AGENTS.md
+.agents/
+.agent/
+_agents/
+_agent/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary / OS files
+.DS_Store
+Thumbs.db

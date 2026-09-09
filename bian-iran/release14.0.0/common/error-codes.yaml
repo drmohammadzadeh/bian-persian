@@ -1,0 +1,91 @@
+openapi: 3.0.1
+info:
+  title: کدهای استاندارد پاسخ و خطای شبکه بانکی ایران (Iran Banking Error Codes)
+  version: 14.0.0
+  description: کدهای خطای سوئیچ شتاب، شاپرک، سامانه‌های بین‌بانکی و قالب خطای RFC 7807.
+paths: {}
+components:
+  schemas:
+    CbiSystemEnum:
+      type: string
+      title: سامانه بانکی مرجع
+      description: نام سامانه حاکمیتی یا زیرساخت بانکی تولیدکننده خطا یا پاسخ.
+      enum:
+        - Shetab
+        - Shaparak
+        - Paya
+        - Satna
+        - Pol
+        - Sayad
+        - Chakad
+        - Sayyah
+        - Nehab
+        - Samat
+        - CoreBanking
+      example: Shetab
+
+    ShetabResponseCode:
+      type: string
+      title: کد پاسخ استاندارد سوئیچ شتاب / شاپرک
+      description: کدهای استاندارد دو رقمی وضعیت تراکنش منطبق بر پروتکل ISO 8583 نسخه بومی شتاب.
+      enum:
+        - '00' # تراکنش موفق
+        - '03' # پذیرنده نامعتبر است
+        - '12' # تراکنش نامعتبر است
+        - '14' # شماره کارت نامعتبر است (کارت وجود ندارد)
+        - '51' # موجودی حساب کافی نیست
+        - '54' # کارت منقضی شده است
+        - '55' # رمز کارت اشتباه است
+        - '57' # انجام تراکنش برای این کارت مجاز نیست
+        - '58' # انجام تراکنش برای این پایانه مجاز نیست
+        - '61' # مبلغ تراکنش بیش از سقف مجاز است
+        - '65' # تعداد دفعات تراکنش بیش از حد مجاز است
+        - '68' # پاسخ در زمان مجاز دریافت نشد (تایم‌اوت)
+        - '75' # تعداد دفعات ورود رمز غلط از حد مجاز گذشت (کارت مسدود شد)
+        - '91' # سوئیچ بانک صادرکننده در دسترس نیست
+        - '92' # مسیری برای هدایت تراکنش یافت نشد
+        - '96' # خطای سیستمی در سوئیچ
+      example: '00'
+
+    ProblemDetails:
+      type: object
+      title: ساختار استاندارد خطای وب‌سرویس
+      description: مدل استاندارد اعلان خطا منطبق بر استاندارد RFC 7807 همراه با شرح فارسی.
+      required:
+        - status
+        - title
+        - errorCode
+        - messageFa
+      properties:
+        type:
+          type: string
+          format: uri
+          title: آدرس مشخصات خطا
+          example: 'https://bank.ir/errors/insufficient-funds'
+        title:
+          type: string
+          title: عنوان خطای فنی
+          example: Insufficient Funds
+        status:
+          type: integer
+          title: کد وضعیت HTTP
+          example: 400
+        detail:
+          type: string
+          title: جزئیات خطای فنی به انگلیسی
+          example: The account balance is insufficient to complete the transaction.
+        errorCode:
+          type: string
+          title: کد خطای اختصاصی شبکه یا بانک
+          example: '51'
+        messageFa:
+          type: string
+          title: شرح خطا به فارسی
+          example: موجودی حساب برای انجام این تراکنش کافی نمی‌باشد.
+        cbiSystem:
+          $ref: '#/components/schemas/CbiSystemEnum'
+        timestamp:
+          type: string
+          format: date-time
+          title: زمان وقوع خطا
+          example: '2026-09-09T11:00:00Z'

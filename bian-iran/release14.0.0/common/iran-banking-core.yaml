@@ -1,0 +1,119 @@
+openapi: 3.0.1
+info:
+  title: مولفه‌های پایه و هسته سیستم بانکی ایران (Iran Banking Core Components)
+  version: 14.0.0
+  description: تعاریف داده‌ای بنیادین، شناسه‌های هویتی سامانه نهاب، حساب‌ها، کارت و تقویم شمسی.
+paths: {}
+components:
+  schemas:
+    NationalId:
+      type: string
+      title: کد ملی شخص حقیقی
+      description: کد ملی ۱۰ رقمی یکتای اشخاص حقیقی صادر شده از ثبت احوال کشور، همراه با رقم کنترل.
+      pattern: '^[0-9]{10}$'
+      example: '0012345678'
+
+    LegalEntityId:
+      type: string
+      title: شناسه ملی شخص حقوقی
+      description: شناسه ملی ۱۱ رقمی اشخاص حقوقی، شرکت‌ها، موسسات و سازمان‌های دولتی.
+      pattern: '^[0-9]{11}$'
+      example: '10100000000'
+
+    ForeignNationalId:
+      type: string
+      title: شناسه فراگیر اتباع خارجی
+      description: شناسه یکتای اختصاص داده شده به اتباع غیرایرانی جهت احراز هویت در شبکه بانکی.
+      pattern: '^[0-9]{9,12}$'
+      example: '9876543210'
+
+    ShahabId:
+      type: string
+      title: شناسه شهاب (نهاب)
+      description: شناسه ۱۶ رقمی هویت الکترونیکی بانکی تولید شده توسط سامانه نهاب بانک مرکزی.
+      pattern: '^[0-9]{16}$'
+      example: '1000000000000001'
+
+    IbanNumber:
+      type: string
+      title: شماره شبا (IBAN ایران)
+      description: شماره ۲۶ کاراکتری استاندارد حساب بانکی ایران که با دو حرف IR آغاز می‌شود.
+      pattern: '^IR[0-9]{24}$'
+      example: 'IR120170000000123456789012'
+
+    InternalAccountNumber:
+      type: string
+      title: شماره حساب داخلی متمرکز
+      description: شماره حساب داخلی مشتری در سامانه Core Banking بانک.
+      pattern: '^[0-9A-Za-z\.\-]{5,30}$'
+      example: '0201500001008'
+
+    CardPan:
+      type: string
+      title: شماره کارت بانکی (PAN)
+      description: شماره ۱۶ رقمی کارت بانکی منطبق با الگوریتم لان (Luhn) و شبکه شتاب.
+      pattern: '^[0-9]{16}$'
+      example: '6037997123456789'
+
+    SayadChequeId:
+      type: string
+      title: شناسه صیادی چک
+      description: شناسه یکتای ۱۶ رقمی چک‌های صیادی تحت نظارت سامانه صیاد بانک مرکزی.
+      pattern: '^[0-9]{16}$'
+      example: '1403123456789012'
+
+    Currency:
+      type: string
+      title: واحد پول
+      description: واحد پول رسمی معامله (ریال ایران پیش‌فرض شبکه شتاب و بانک مرکزی).
+      enum:
+        - IRR
+        - IRT
+      default: IRR
+      example: IRR
+
+    JalaliDate:
+      type: string
+      title: تاریخ هجری شمسی (جلالی)
+      description: تاریخ تقویم رسمی کشور ایران به فرمت YYYY/MM/DD یا YYYY-MM-DD.
+      pattern: '^[1-4][0-9]{3}[/-](0[1-9]|1[0-2])[/-](0[1-9]|[12][0-9]|3[01])$'
+      example: '1403/06/19'
+
+    FinancialAmount:
+      type: object
+      title: مبلغ مالی
+      description: ساختار استاندارد نگهداری مبالغ پولی به صورت عدد صحیح ریالی.
+      required:
+        - amount
+        - currency
+      properties:
+        amount:
+          type: integer
+          format: int64
+          title: مقدار ریالی
+          description: مبلغ پولی به صورت عدد صحیح (بدون ممیز).
+          example: 50000000
+        currency:
+          $ref: '#/components/schemas/Currency'
+
+    CustomerIdentification:
+      type: object
+      title: مشخصات هویتی مشتری
+      description: پکیج هویتی جامع مشتری در اکوسیستم بانکی ایران.
+      required:
+        - nationalId
+        - fullNameFa
+      properties:
+        nationalId:
+          $ref: '#/components/schemas/NationalId'
+        shahabId:
+          $ref: '#/components/schemas/ShahabId'
+        fullNameFa:
+          type: string
+          title: نام و نام خانوادگی به فارسی
+          example: علی محمدزاده
+        mobileNumber:
+          type: string
+          title: شماره تلفن همراه
+          pattern: '^09[0-9]{9}$'
+          example: '09121234567'

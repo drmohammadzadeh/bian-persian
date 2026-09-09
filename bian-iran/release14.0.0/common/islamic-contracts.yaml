@@ -1,0 +1,143 @@
+openapi: 3.0.1
+info:
+  title: مدل داده عقود اسلامی و تسهیلات بانکی ایران (Islamic Banking Contracts)
+  version: 14.0.0
+  description: تعاریف عقود قانون عملیات بانکی بدون ربا، محاسبات سود مصوب، جداول اقساط و وثایق.
+paths: {}
+components:
+  schemas:
+    ContractType:
+      type: string
+      title: نوع عقد اسلامی
+      description: عنوان عقد شرعی و قانونی حاکم بر تسهیلات طبق قانون عملیات بانکی بدون ربا.
+      enum:
+        - Morabaha
+        - Mozaraba
+        - Jaala
+        - GharzOlHasaneh
+        - Salaf
+        - CivilPartnership
+        - FinancialLease
+        - Istisna
+      example: Morabaha
+
+    IslamicContractDetails:
+      type: object
+      title: مشخصات قرارداد عقد اسلامی
+      description: اطلاعات ساختاریافته مالی و حقوقی عقد منعقد شده با مشتری.
+      required:
+        - contractNumber
+        - contractType
+        - approvedProfitRate
+        - principalAmount
+        - installmentCount
+      properties:
+        contractNumber:
+          type: string
+          title: شماره قرارداد
+          example: 'CT-1403-8891'
+        contractType:
+          $ref: '#/components/schemas/ContractType'
+        approvedProfitRate:
+          type: number
+          format: float
+          title: نرخ سود مصوب سالانه (درصد)
+          description: نرخ سود علی‌الحساب یا قطعی مصوب شورای پول و اعتبار.
+          example: 23.0
+        latePaymentPenaltyRate:
+          type: number
+          format: float
+          title: نرخ وجه التزام تأخیر تأدیه (درصد)
+          description: جریمه قانونی تأخیر در بازپرداخت اقساط مصوب بانک مرکزی.
+          example: 6.0
+        principalAmount:
+          $ref: 'iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        totalRepaymentAmount:
+          $ref: 'iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        installmentCount:
+          type: integer
+          title: تعداد کل اقساط
+          example: 36
+        gracePeriodMonths:
+          type: integer
+          title: دوره تنفس به ماه
+          example: 0
+
+    CollateralType:
+      type: string
+      title: نوع وثیقه و تضمین
+      description: نوع وثیقه اخذ شده از متقاضی یا ضامنین جهت پوشش ریسک اعتباری.
+      enum:
+        - ElectronicPromissoryNote
+        - OfficialGuarantor
+        - DepositPledge
+        - RealEstateMortgage
+        - StockPledge
+      example: ElectronicPromissoryNote
+
+    CollateralDetails:
+      type: object
+      title: مشخصات وثیقه یا ضمانت
+      description: اطلاعات ثبتی، ارزیابی ریالی و ذینفع وثیقه.
+      required:
+        - collateralId
+        - collateralType
+        - assessedValue
+      properties:
+        collateralId:
+          type: string
+          title: شناسه وثیقه یا شناسه سفته الکترونیک
+          example: 'EPN-9982341'
+        collateralType:
+          $ref: '#/components/schemas/CollateralType'
+        assessedValue:
+          $ref: 'iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        ownerNationalId:
+          $ref: 'iran-banking-core.yaml#/components/schemas/NationalId'
+        description:
+          type: string
+          title: توضیحات وثیقه
+          example: سفته الکترونیک ثبت شده در سامانه خزانه داری کل کشور
+
+    InstallmentItem:
+      type: object
+      title: رکورد یک قسط
+      required:
+        - installmentNumber
+        - dueDate
+        - totalInstallmentAmount
+        - isPaid
+      properties:
+        installmentNumber:
+          type: integer
+          title: شماره قسط
+          example: 1
+        dueDate:
+          $ref: 'iran-banking-core.yaml#/components/schemas/JalaliDate'
+        principalPortion:
+          $ref: 'iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        profitPortion:
+          $ref: 'iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        totalInstallmentAmount:
+          $ref: 'iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        isPaid:
+          type: boolean
+          title: وضعیت پرداخت قسط
+          example: false
+
+    InstallmentSchedule:
+      type: object
+      title: جدول زمان‌بندی اقساط تسهیلات
+      description: جدول استهلاک بدهی و سررسیدهای اقساط به تقویم هجری شمسی.
+      required:
+        - loanId
+        - installments
+      properties:
+        loanId:
+          type: string
+          title: شناسه تسهیلات
+          example: 'LN-772391'
+        installments:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstallmentItem'

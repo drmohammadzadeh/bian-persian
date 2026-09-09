@@ -1,0 +1,221 @@
+openapi: 3.0.1
+info:
+  title: دامنه سرویس دستور پرداخت بین‌بانکی (Payment Order Initiation)
+  version: 14.0.0
+  description: >-
+    آغاز و هدایت هوشمند دستورات پرداخت ریالی مشتری به کانال‌های تسویه متمرکز شبکه بانکی ایران
+    شامل انتقال داخلی درون‌بانکی، سامانه پرداخت لحظه‌ای (پل)، سامانه پایاپای الکترونیک (پایا)،
+    و تسویه ناخالص آنی (ساتنا) همراه با کنترل سقف‌های مجاز روزانه بانک مرکزی.
+servers:
+  - url: https://api.bank.ir/bian-iran/v14/payment-order
+    description: سرور درگاه خدمات پرداخت و انتقال وجه متمرکز
+paths:
+  /PaymentOrder/Initiate:
+    post:
+      summary: ثبت و اجرای دستور پرداخت
+      description: >-
+        ثبت تراکنش انتقال وجه بر اساس شماره شبا یا حساب مقصد با انتخاب هوشمند یا دستی
+        روش تسویه (داخلی، پل، پایا یا ساتنا) و صدور شناسه پیگیری یکتا.
+      operationId: initiatePaymentOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiatePaymentOrderRequest'
+      responses:
+        '201':
+          description: دستور پرداخت با موفقیت ثبت و هدایت گردید.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentOrderRecord'
+        '400':
+          description: خطای اعتبارسنجی شبای مقصد یا فراتر رفتن از سقف مجاز
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+        '500':
+          description: خطای داخلی یا قطعی موقت سامانه بین‌بانکی
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+  /PaymentOrder/ValidateLimits:
+    post:
+      summary: بررسی سقف مجاز انتقال وجه (کنترل مقرراتی بانک مرکزی)
+      description: >-
+        استعلام انطباق مبلغ درخواستی با سقف‌های مجاز تراکنش روزانه و ماهانه مصوب بانک مرکزی
+        بر اساس نوع ابزار احراز هویت و کانال تراکنش (همراه‌بانک، اینترنت‌بانک، شعبه).
+      operationId: validatePaymentLimits
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateLimitsRequest'
+      responses:
+        '200':
+          description: نتیجه اعتبارسنجی سقف انتقال وجه
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateLimitsResponse'
+        '400':
+          description: خطای ساختار درخواست
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+  /PaymentOrder/{paymentId}/Status:
+    get:
+      summary: استعلام وضعیت اجرای دستور پرداخت
+      description: >-
+        مشاهده آخرین وضعیت تسویه پرداخت در سامانه‌های پایا/ساتنا/پل با استفاده از شناسه سفارش یا کد رهگیری شتابی/بانکی.
+      operationId: retrievePaymentOrderStatus
+      parameters:
+        - name: paymentId
+          in: path
+          required: true
+          description: شناسه سفارش پرداخت
+          schema:
+            type: string
+            example: 'PMT-1403-00982'
+      responses:
+        '200':
+          description: وضعیت سفارش پرداخت با موفقیت بازگردانده شد.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentOrderRecord'
+        '404':
+          description: شناسه سفارش پرداخت یافت نشد.
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+components:
+  schemas:
+    PaymentRailType:
+      type: string
+      title: بستر و روش انتقال وجه
+      description: سامانه تسویه بین‌بانکی یا کانال انتقال وجه.
+      enum:
+        - Internal # انتقال درون‌بانکی حساب به حساب
+        - Pol      # سامانه پرداخت لحظه‌ای پل
+        - Paya     # سامانه پایاپای الکترونیک (ACH)
+        - Satna    # سامانه تسویه ناخالص آنی (RTGS)
+      example: Pol
+
+    ChannelType:
+      type: string
+      title: کانال مبدا تراکنش
+      enum:
+        - MobileBanking
+        - InternetBanking
+        - Branch
+        - OpenApiGateway
+      example: MobileBanking
+
+    InitiatePaymentOrderRequest:
+      type: object
+      title: درخواست ثبت دستور پرداخت
+      required:
+        - sourceIban
+        - destinationIban
+        - amount
+        - channel
+      properties:
+        sourceIban:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/IbanNumber'
+        destinationIban:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/IbanNumber'
+        destinationOwnerName:
+          type: string
+          title: نام صاحب حساب مقصد
+          example: شرکت خدمات انفورماتیک
+        amount:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        preferredRail:
+          $ref: '#/components/schemas/PaymentRailType'
+        channel:
+          $ref: '#/components/schemas/ChannelType'
+        descriptionFa:
+          type: string
+          title: بابت / شرح تراکنش
+          example: بابت خرید تجهیزات اداری
+        paymentIdTag:
+          type: string
+          title: شناسه واریز
+          description: شناسه واریز ۳۰ رقمی اختصاصی سازمان‌ها یا نهادهای دولتی.
+          example: '990008012345678901234567890123'
+
+    PaymentOrderRecord:
+      type: object
+      title: رکورد سفارش پرداخت
+      required:
+        - paymentId
+        - trackingNumber
+        - paymentRail
+        - status
+        - executionDate
+      properties:
+        paymentId:
+          type: string
+          example: 'PMT-1403-00982'
+        trackingNumber:
+          type: string
+          title: شماره پیگیری یکتا
+          example: 'TRC-982341209'
+        cbiReferenceNumber:
+          type: string
+          title: شناسه مرجع سامانه بانک مرکزی (پل/پایا/ساتنا)
+          example: 'CBI-POL-20260909-88123'
+        paymentRail:
+          $ref: '#/components/schemas/PaymentRailType'
+        status:
+          type: string
+          title: وضعیت انتقال
+          enum:
+            - InProgress
+            - Completed
+            - ScheduledForCycle
+            - Rejected
+          example: Completed
+        executionDate:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/JalaliDate'
+
+    ValidateLimitsRequest:
+      type: object
+      title: درخواست اعتبارسنجی سقف انتقال
+      required:
+        - customerNationalId
+        - amount
+        - channel
+      properties:
+        customerNationalId:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/NationalId'
+        amount:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        channel:
+          $ref: '#/components/schemas/ChannelType'
+
+    ValidateLimitsResponse:
+      type: object
+      title: پاسخ اعتبارسنجی سقف
+      required:
+        - isAllowed
+        - remainingDailyLimit
+      properties:
+        isAllowed:
+          type: boolean
+          example: true
+        remainingDailyLimit:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        messageFa:
+          type: string
+          example: مبلغ تراکنش در محدوده سقف مجاز روزانه بانک مرکزی قرار دارد.

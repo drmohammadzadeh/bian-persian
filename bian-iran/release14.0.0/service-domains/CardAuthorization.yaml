@@ -1,0 +1,242 @@
+openapi: 3.0.1
+info:
+  title: دامنه سرویس مجوزدهی تراکنش کارت و سوئیچ شتاب (Card Authorization)
+  version: 14.0.0
+  description: >-
+    صدور مجوز تراکنش‌های کارتی در شبکه شتاب و شاپرک، احراز هویت دارنده کارت (رمز دوم پویا/هدی،
+    رمز اول ایستا، CVV2، تاریخ انقضا)، تطابق کدملی با سیم‌کارت در سامانه شاهکار،
+    کنترل سقف برداشت روزانه و ارسال کدهای پاسخ استاندارد ISO 8583 شتاب.
+servers:
+  - url: https://api.bank.ir/bian-iran/v14/card-authorization
+    description: سرور سوئیچ صادرکنندگی کارت (Issuer Switch)
+paths:
+  /CardAuthorization/Authorize:
+    post:
+      summary: اعتبارسنجی و صدور مجوز تراکنش کارت (شبکه شتاب/شاپرک)
+      description: >-
+        احراز هویت دارنده کارت شامل رمز پویا (OTP)، CVV2، تاریخ انقضا و بررسی تطابق شماره موبایل با کدملی (سامانه شاهکار).
+      operationId: authorizeCardTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardAuthorizationRequest'
+      responses:
+        '200':
+          description: تراکنش در شبکه شتاب با موفقیت تایید و کد مجوز صادر گردید.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardAuthorizationResponse'
+        '400':
+          description: رمز نامعتبر، کارت منقضی یا خطای اعتبارسنجی
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+        '403':
+          description: عدم تطابق کدملی دارنده کارت با مالک سیم‌کارت (خطای شاهکار)
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+  /CardAuthorization/VerifyBalance:
+    post:
+      summary: کنترل موجودی و بررسی سقف تراکنش کارت
+      description: >-
+        استعلام مانده قابل دسترس حساب متصل به کارت و کنترل سقف مجاز روزانه برداشت و خرید کارتی.
+      operationId: verifyCardBalanceAndLimits
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyBalanceRequest'
+      responses:
+        '200':
+          description: موجودی و سقف تراکنش تایید شد.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyBalanceResponse'
+        '400':
+          description: موجودی حساب کافی نیست یا سقف مجاز روزانه پر شده است.
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+  /CardAuthorization/Reverse:
+    post:
+      summary: اصلاحیه و برگشت تراکنش (Reversal)
+      description: >-
+        عملیات برگشت تراکنش در شبکه شتاب به دلیل خطای زمان‌بندی یا عدم دریافت تاییدیه پایانه/خودپرداز.
+      operationId: reverseCardTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardReversalRequest'
+      responses:
+        '200':
+          description: تراکنش اصلاحیه با موفقیت پردازش شد و وجه به حساب بازگشت.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardReversalResponse'
+        '404':
+          description: تراکنش اصلی جهت برگشت یافت نشد.
+          content:
+            application/json:
+              schema:
+                $ref: '../common/error-codes.yaml#/components/schemas/ProblemDetails'
+
+components:
+  schemas:
+    CardTransactionType:
+      type: string
+      title: نوع تراکنش شتابی
+      enum:
+        - Purchase          # خرید فروشگاهی یا اینترنتی
+        - BillPayment       # پرداخت قبض
+        - BalanceInquiry    # اعلام مانده
+        - CashWithdrawal    # برداشت وجه خودپرداز
+        - CardToCard        # انتقال وجه کارت به کارت (سحاب)
+      example: Purchase
+
+    CardAuthorizationRequest:
+      type: object
+      title: درخواست مجوزدهی تراکنش کارت
+      required:
+        - cardPan
+        - transactionType
+        - amount
+        - traceNumber
+        - rrn
+      properties:
+        cardPan:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/CardPan'
+        pinType:
+          type: string
+          enum: [Pin1, DynamicOtpPin2, StaticPin2]
+          example: DynamicOtpPin2
+        pinBlock:
+          type: string
+          title: بلاک رمز یا رمز پویا
+          example: '891023'
+        cvv2:
+          type: string
+          title: کد اعتبارسنجی کارت (CVV2)
+          pattern: '^[0-9]{3,4}$'
+          example: '891'
+        expirationDate:
+          type: string
+          title: تاریخ انقضا (سال/ماه شمسی)
+          pattern: '^[0-9]{2}[0-9]{2}$'
+          example: '0612' # اسفند 1406
+        transactionType:
+          $ref: '#/components/schemas/CardTransactionType'
+        amount:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        traceNumber:
+          type: string
+          title: شماره پیگیری تراکنش (Trace)
+          example: '882310'
+        rrn:
+          type: string
+          title: شماره ارجاع شتابی (RRN)
+          example: '140309090012'
+        terminalId:
+          type: string
+          title: شناسه ترمینال پوز یا درگاه
+          example: 'POS-09881234'
+
+    CardAuthorizationResponse:
+      type: object
+      title: پاسخ مجوزدهی تراکنش کارت
+      required:
+        - responseCode
+        - isAuthorized
+      properties:
+        responseCode:
+          $ref: '../common/error-codes.yaml#/components/schemas/ShetabResponseCode'
+        isAuthorized:
+          type: boolean
+          example: true
+        approvalCode:
+          type: string
+          title: کد تاییدیه صادرکننده
+          example: 'APP-998231'
+        messageFa:
+          type: string
+          example: تراکنش با موفقیت تایید و انجام شد.
+
+    VerifyBalanceRequest:
+      type: object
+      title: استعلام موجودی و سقف تراکنش
+      required:
+        - cardPan
+        - requestedAmount
+      properties:
+        cardPan:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/CardPan'
+        requestedAmount:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+
+    VerifyBalanceResponse:
+      type: object
+      title: نتیجه بررسی موجودی و سقف
+      required:
+        - hasSufficientBalance
+        - withinDailyLimit
+      properties:
+        hasSufficientBalance:
+          type: boolean
+          example: true
+        withinDailyLimit:
+          type: boolean
+          example: true
+        availableBalance:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+
+    CardReversalRequest:
+      type: object
+      title: درخواست اصلاحیه شتابی
+      required:
+        - cardPan
+        - originalTraceNumber
+        - originalRrn
+        - originalAmount
+      properties:
+        cardPan:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/CardPan'
+        originalTraceNumber:
+          type: string
+          example: '882310'
+        originalRrn:
+          type: string
+          example: '140309090012'
+        originalAmount:
+          $ref: '../common/iran-banking-core.yaml#/components/schemas/FinancialAmount'
+        reasonCode:
+          type: string
+          example: 'TIMEOUT'
+
+    CardReversalResponse:
+      type: object
+      title: پاسخ اصلاحیه شتابی
+      required:
+        - responseCode
+        - isReversed
+      properties:
+        responseCode:
+          $ref: '../common/error-codes.yaml#/components/schemas/ShetabResponseCode'
+        isReversed:
+          type: boolean
+          example: true
+        messageFa:
+          type: string
+          example: عملیات اصلاحیه با موفقیت ثبت شد و مبلغ به حساب برگشت داده شد.
